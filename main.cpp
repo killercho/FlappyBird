@@ -11,6 +11,9 @@ int main()
     const float SPEED = 1;
     const float JUMPFORCE = 60;
     const float GRAVITY = 2;
+    const int HOLESIZE = 100;
+    const int PILONHEIGHT = 620;
+    const int PILONWIDTH = 52;
 
     const std::string TITLE = "Cheappy bird";
 
@@ -26,11 +29,17 @@ int main()
     Texture2D pilon = LoadTexture("./sprites/pipe-red.png");
 
     Vector2 birdPosition = { (float)WIDTH / 2, (float)HEIGHT / 2 };
-    // TODO: Make the pilons in a group and move them together
-    // TODO: Move the pilons with a random y
     // TODO: Add collision between the pilons and the bird
-    Vector2 pilon1PosTop = { (float)400, (float)260 };
-    Vector2 pilon1PosBottom = { (float)400, (float)0 };
+    // TODO: Add a floor and a ceiling
+    const int MINY = 120;
+    const int MAXY = 450;
+    int randomOffset = GetRandomValue(MINY, MAXY);
+    Vector2 pilon1PosTop = { (float)400, (float)randomOffset - PILONHEIGHT - HOLESIZE };
+    Vector2 pilon1PosBottom = { (float)400, (float)randomOffset };
+
+    randomOffset = GetRandomValue(MINY, MAXY);
+    Vector2 pilon2PosTop = { (float)600, (float)randomOffset - PILONHEIGHT - HOLESIZE };
+    Vector2 pilon2PosBottom = { (float)600, (float)randomOffset };
     // TODO: Make a second pair of pilons that spawns a little after the first
 
     // TODO: Move the camera a little to the left
@@ -42,10 +51,23 @@ int main()
         birdPosition.y += GRAVITY;
         pilon1PosTop.x -= SPEED;
         pilon1PosBottom.x -= SPEED;
+        pilon2PosTop.x -= SPEED;
+        pilon2PosBottom.x -= SPEED;
 
-        if (pilon1PosTop.x <= -52) {
-            pilon1PosTop.x = WIDTH + 52;
-            pilon1PosBottom.x = WIDTH + 52;
+        if (pilon1PosTop.x <= -PILONWIDTH) {
+            pilon1PosTop.x = WIDTH + PILONWIDTH;
+            pilon1PosBottom.x = WIDTH + PILONWIDTH;
+            randomOffset = GetRandomValue(MINY, MAXY);
+            pilon1PosBottom.y = randomOffset;
+            pilon1PosTop.y = randomOffset - PILONHEIGHT - HOLESIZE;
+        }
+
+        if (pilon2PosTop.x <= -PILONWIDTH) {
+            pilon2PosTop.x = WIDTH + PILONWIDTH;
+            pilon2PosBottom.x = WIDTH + PILONWIDTH;
+            randomOffset = GetRandomValue(MINY, MAXY);
+            pilon2PosBottom.y = randomOffset;
+            pilon2PosTop.y = randomOffset - PILONHEIGHT - HOLESIZE;
         }
 
         // Input
@@ -59,8 +81,11 @@ int main()
         DrawTexture(background, 0, 0, WHITE);
         DrawTexture(bird, birdPosition.x, birdPosition.y, WHITE);
 
-        DrawTextureRec(pilon, { 0, 0, 52, 320 }, pilon1PosTop, WHITE);
-        DrawTextureRec(pilon, { 0, 0, 52, -160 }, pilon1PosBottom, WHITE);
+        DrawTextureRec(pilon, { 0, 0, PILONWIDTH, -PILONHEIGHT }, pilon1PosTop, WHITE);
+        DrawTextureRec(pilon, { 0, 0, PILONWIDTH, PILONHEIGHT }, pilon1PosBottom, WHITE);
+
+        DrawTextureRec(pilon, { 0, 0, PILONWIDTH, -PILONHEIGHT }, pilon2PosTop, WHITE);
+        DrawTextureRec(pilon, { 0, 0, PILONWIDTH, PILONHEIGHT }, pilon2PosBottom, WHITE);
         EndDrawing();
     }
 
