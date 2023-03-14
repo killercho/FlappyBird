@@ -5,19 +5,20 @@ int main()
 {
     // TODO: Make the app detect the width and height of the phone automatically
     // Background texture size - 288x512
-    const int WIDTH = 288;
-    const int HEIGHT = 512;
+    const int SCREEN_WIDTH = 288;
+    const int SCREEN_HEIGHT = 512;
 
     const float SPEED = 1;
     const float JUMPFORCE = 60;
     const float GRAVITY = 2;
-    const int HOLESIZE = 100;
-    const int PILONHEIGHT = 620;
-    const int PILONWIDTH = 52;
+    const int HOLE_SIZE = 100;
+    const int PILON_HEIGHT = 620;
+    const int PILON_WIDTH = 52;
+    const int BIRD_HEIGHT = 24;
 
     const std::string TITLE = "Cheappy bird";
 
-    InitWindow(WIDTH, HEIGHT, TITLE.c_str());
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, TITLE.c_str());
     SetTargetFPS(60);
 
     // TODO: Make the background change depending on the clock
@@ -28,17 +29,17 @@ int main()
     Texture2D bird = LoadTexture("./sprites/redbird-midflap.png");
     Texture2D pilon = LoadTexture("./sprites/pipe-red.png");
 
-    Vector2 birdPosition = { (float)WIDTH / 2, (float)HEIGHT / 2 };
+    Vector2 birdPosition = { (float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2 };
     // TODO: Add collision between the pilons and the bird
     // TODO: Add a floor and a ceiling
     const int MINY = 120;
     const int MAXY = 450;
     int randomOffset = GetRandomValue(MINY, MAXY);
-    Vector2 pilon1PosTop = { (float)400, (float)randomOffset - PILONHEIGHT - HOLESIZE };
+    Vector2 pilon1PosTop = { (float)400, (float)randomOffset - PILON_HEIGHT - HOLE_SIZE };
     Vector2 pilon1PosBottom = { (float)400, (float)randomOffset };
 
     randomOffset = GetRandomValue(MINY, MAXY);
-    Vector2 pilon2PosTop = { (float)600, (float)randomOffset - PILONHEIGHT - HOLESIZE };
+    Vector2 pilon2PosTop = { (float)600, (float)randomOffset - PILON_HEIGHT - HOLE_SIZE };
     Vector2 pilon2PosBottom = { (float)600, (float)randomOffset };
     // TODO: Make a second pair of pilons that spawns a little after the first
 
@@ -54,21 +55,26 @@ int main()
         pilon2PosTop.x -= SPEED;
         pilon2PosBottom.x -= SPEED;
 
-        if (pilon1PosTop.x <= -PILONWIDTH) {
-            pilon1PosTop.x = WIDTH + PILONWIDTH;
-            pilon1PosBottom.x = WIDTH + PILONWIDTH;
+        if (pilon1PosTop.x <= -PILON_WIDTH) {
+            pilon1PosTop.x = SCREEN_WIDTH + PILON_WIDTH;
+            pilon1PosBottom.x = SCREEN_WIDTH + PILON_WIDTH;
             randomOffset = GetRandomValue(MINY, MAXY);
             pilon1PosBottom.y = randomOffset;
-            pilon1PosTop.y = randomOffset - PILONHEIGHT - HOLESIZE;
+            pilon1PosTop.y = randomOffset - PILON_HEIGHT - HOLE_SIZE;
         }
 
-        if (pilon2PosTop.x <= -PILONWIDTH) {
-            pilon2PosTop.x = WIDTH + PILONWIDTH;
-            pilon2PosBottom.x = WIDTH + PILONWIDTH;
+        if (pilon2PosTop.x <= -PILON_WIDTH) {
+            pilon2PosTop.x = SCREEN_WIDTH + PILON_WIDTH;
+            pilon2PosBottom.x = SCREEN_WIDTH + PILON_WIDTH;
             randomOffset = GetRandomValue(MINY, MAXY);
             pilon2PosBottom.y = randomOffset;
-            pilon2PosTop.y = randomOffset - PILONHEIGHT - HOLESIZE;
+            pilon2PosTop.y = randomOffset - PILON_HEIGHT - HOLE_SIZE;
         }
+
+        if (birdPosition.y < 0)
+            birdPosition.y = 0;
+        if (birdPosition.y > SCREEN_HEIGHT - BIRD_HEIGHT)
+            birdPosition.y = SCREEN_HEIGHT - BIRD_HEIGHT;
 
         // Input
         if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP))
@@ -81,11 +87,11 @@ int main()
         DrawTexture(background, 0, 0, WHITE);
         DrawTexture(bird, birdPosition.x, birdPosition.y, WHITE);
 
-        DrawTextureRec(pilon, { 0, 0, PILONWIDTH, -PILONHEIGHT }, pilon1PosTop, WHITE);
-        DrawTextureRec(pilon, { 0, 0, PILONWIDTH, PILONHEIGHT }, pilon1PosBottom, WHITE);
+        DrawTextureRec(pilon, { 0, 0, PILON_WIDTH, -PILON_HEIGHT }, pilon1PosTop, WHITE);
+        DrawTextureRec(pilon, { 0, 0, PILON_WIDTH, PILON_HEIGHT }, pilon1PosBottom, WHITE);
 
-        DrawTextureRec(pilon, { 0, 0, PILONWIDTH, -PILONHEIGHT }, pilon2PosTop, WHITE);
-        DrawTextureRec(pilon, { 0, 0, PILONWIDTH, PILONHEIGHT }, pilon2PosBottom, WHITE);
+        DrawTextureRec(pilon, { 0, 0, PILON_WIDTH, -PILON_HEIGHT }, pilon2PosTop, WHITE);
+        DrawTextureRec(pilon, { 0, 0, PILON_WIDTH, PILON_HEIGHT }, pilon2PosBottom, WHITE);
         EndDrawing();
     }
 
