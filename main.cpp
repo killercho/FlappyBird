@@ -1,6 +1,8 @@
 #include <raylib.h>
 #include <string>
 
+#include <iostream>
+
 int main()
 {
     // TODO: Make the app detect the width and height of the phone automatically
@@ -43,7 +45,7 @@ int main()
     randomOffset = GetRandomValue(MINY, MAXY);
     Vector2 pilon2PosTop = { (float)600, (float)randomOffset - PILON_HEIGHT - HOLE_SIZE };
     Vector2 pilon2PosBottom = { (float)600, (float)randomOffset };
-    Vector2 score2Pos = { (float)400, (float)randomOffset - PILON_HEIGHT };
+    Vector2 score2Pos = { (float)600, (float)randomOffset - PILON_HEIGHT };
 
     Rectangle birdHitbox;
 
@@ -57,6 +59,9 @@ int main()
 
     bool gameOver = false;
     int score = 0;
+
+    bool collidedScore1 = false;
+    bool collidedScore2 = false;
 
     // Main game loop:
     while (!WindowShouldClose()) {
@@ -153,14 +158,25 @@ int main()
         hitPilon |= CheckCollisionRecs(birdHitbox, pilon2TopHitbox);
         hitPilon |= CheckCollisionRecs(birdHitbox, pilon2BottomHitbox);
 
-        bool hitScore = CheckCollisionRecs(birdHitbox, score1Hitbox);
-        hitScore |= CheckCollisionRecs(birdHitbox, score1Hitbox);
+        bool hitScore1 = CheckCollisionRecs(birdHitbox, score1Hitbox);
+        bool hitScore2 = CheckCollisionRecs(birdHitbox, score2Hitbox);
 
         if (hitPilon)
             gameOver = true;
 
-        if (hitScore)
+        if (hitScore1 && !collidedScore1) {
             score++;
+            collidedScore1 = true;
+            collidedScore2 = false;
+            std::cout << "Score from score 1: " << score << '\n';
+        }
+
+        if (hitScore2 && !collidedScore2) {
+            score++;
+            collidedScore1 = false;
+            collidedScore2 = true;
+            std::cout << "Score from score 2: " << score << '\n';
+        }
 
         // Draw
         BeginDrawing();
@@ -183,6 +199,7 @@ int main()
     }
 
     UnloadTexture(background);
+    UnloadTexture(pilon);
     UnloadTexture(bird);
     CloseWindow();
     return 0;
