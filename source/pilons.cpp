@@ -15,21 +15,21 @@ void Pilon::updateHitboxes()
         topPos.x,
         topPos.y,
         PILON_WIDTH,
-        PILON_WIDTH,
+        PILON_HEIGHT,
     };
 
     pilonBottomHitbox = (Rectangle) {
         bottomPos.x,
         bottomPos.y,
         PILON_WIDTH,
-        PILON_WIDTH,
+        PILON_HEIGHT,
     };
 
     scoreHitbox = (Rectangle) {
         scorePos.x,
         scorePos.y,
         PILON_WIDTH,
-        PILON_WIDTH,
+        PILON_HEIGHT,
     };
 }
 
@@ -56,37 +56,43 @@ void Pilon::movePilon(int speed)
     updateHitboxes();
 }
 
-Texture2D Pilon::getTexture() const
+void Pilon::draw()
+{
+    DrawTextureRec(pilon, { 0, 0, PILON_WIDTH, -PILON_HEIGHT }, topPos, WHITE);
+    DrawTextureRec(pilon, { 0, 0, PILON_WIDTH, PILON_HEIGHT }, bottomPos, WHITE);
+}
+
+const Texture2D& Pilon::getTexture() const
 {
     return pilon;
 }
 
-Rectangle Pilon::getTopHitbox() const
+const Rectangle& Pilon::getTopHitbox() const
 {
     return pilonTopHitbox;
 }
 
-Rectangle Pilon::getBottomHitbox() const
+const Rectangle& Pilon::getBottomHitbox() const
 {
     return pilonBottomHitbox;
 }
 
-Rectangle Pilon::getScoreHitbox() const
+const Rectangle& Pilon::getScoreHitbox() const
 {
     return scoreHitbox;
 }
 
-Vector2 Pilon::getTopPos() const
+const Vector2& Pilon::getTopPos() const
 {
     return topPos;
 }
 
-Vector2 Pilon::getBottomPos() const
+const Vector2& Pilon::getBottomPos() const
 {
     return bottomPos;
 }
 
-Vector2 Pilon::getScorePos() const
+const Vector2& Pilon::getScorePos() const
 {
     return scorePos;
 }

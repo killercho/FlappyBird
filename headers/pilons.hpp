@@ -31,16 +31,17 @@ public:
     ~Pilon();                  // Destructor unloading the pilon texture
 
     void movePilon(int); // Function moving the pilon with a x value, also includes the chage of sides
+    void draw();
 
-    Texture2D getTexture() const; // Returns the texture
+    const Texture2D& getTexture() const; // Returns the texture
 
-    Rectangle getTopHitbox() const;    // Returns the top hitbox
-    Rectangle getBottomHitbox() const; // Returns the top hitbox
-    Rectangle getScoreHitbox() const;  // Returns the top hitbox
+    const Rectangle& getTopHitbox() const;    // Returns the top hitbox
+    const Rectangle& getBottomHitbox() const; // Returns the top hitbox
+    const Rectangle& getScoreHitbox() const;  // Returns the top hitbox
 
-    Vector2 getTopPos() const;    // Returns the top position
-    Vector2 getBottomPos() const; // Returns the top position
-    Vector2 getScorePos() const;  // Returns the top position
+    const Vector2& getTopPos() const;    // Returns the top position
+    const Vector2& getBottomPos() const; // Returns the top position
+    const Vector2& getScorePos() const;  // Returns the top position
 };
 
 #endif

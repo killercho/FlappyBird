@@ -32,8 +32,7 @@ int main()
     Pilon* pilon1 = new Pilon("./sprites/pipe-red.png", 400);
     Pilon* pilon2 = new Pilon("./sprites/pipe-red.png", 600);
 
-    Vector2 birdPosition
-        = { (float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2 };
+    Vector2 birdPosition = { (float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2 };
 
     Rectangle birdHitbox;
 
@@ -67,11 +66,13 @@ int main()
             birdPosition.y -= JUMPFORCE;
 
         // Collision
+        // TODO: Move inside the bird class
         bool hitPilon = CheckCollisionRecs(birdHitbox, pilon1->getTopHitbox());
         hitPilon |= CheckCollisionRecs(birdHitbox, pilon1->getBottomHitbox());
         hitPilon |= CheckCollisionRecs(birdHitbox, pilon2->getTopHitbox());
         hitPilon |= CheckCollisionRecs(birdHitbox, pilon2->getBottomHitbox());
 
+        // TODO: Move inside the bird class
         bool hitScore1 = CheckCollisionRecs(birdHitbox, pilon1->getScoreHitbox());
         bool hitScore2 = CheckCollisionRecs(birdHitbox, pilon2->getScoreHitbox());
 
@@ -100,10 +101,9 @@ int main()
             DrawTexture(background, 0, 0, WHITE);
             DrawTexture(bird, birdPosition.x, birdPosition.y, WHITE);
 
-            DrawTextureRec(pilon1->getTexture(), { 0, 0, Pilon::PILON_WIDTH, -Pilon::PILON_HEIGHT }, pilon1->getTopPos(), WHITE);
-            DrawTextureRec(pilon1->getTexture(), { 0, 0, Pilon::PILON_WIDTH, -Pilon::PILON_HEIGHT }, pilon1->getBottomPos(), WHITE);
-            DrawTextureRec(pilon2->getTexture(), { 0, 0, Pilon::PILON_WIDTH, -Pilon::PILON_HEIGHT }, pilon2->getTopPos(), WHITE);
-            DrawTextureRec(pilon2->getTexture(), { 0, 0, Pilon::PILON_WIDTH, -Pilon::PILON_HEIGHT }, pilon2->getBottomPos(), WHITE);
+            pilon1->draw();
+            pilon2->draw();
+
         } else {
             DrawText("Game over", 0, 0, 25, BLACK);
             DrawText(TextFormat("Your score is: %d", score), 0, 0, 25, BLACK);
